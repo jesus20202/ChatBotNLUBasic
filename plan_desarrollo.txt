@@ -1,0 +1,216 @@
+🛠️ PLAN DE DESARROLLO - Implementación Paso a Paso
+📋 SITUACIÓN ACTUAL
+✅ Base de datos creada con información
+✅ Estructura de carpetas y archivos lista
+✅ Decisión: usar huggingface_hub SDK
+🚀 PLAN DE DESARROLLO POR FASES
+FASE 1: Base FastAPI + Conexión BD (30 min)
+1.1 Configuración inicial
+python# main.py - Setup básico FastAPI
+- Crear app FastAPI
+- Configurar CORS
+- Endpoint básico de health check
+- Servidor de archivos estáticos
+1.2 Conexión a Base de Datos
+python# database/connection.py
+- Configurar SQLAlchemy engine
+- Session maker
+- Dependency para get_db()
+
+# models/database.py  
+- Definir todos los modelos SQLAlchemy
+- Relaciones entre tablas
+- Métodos básicos
+1.3 Testing conexión
+python# Endpoint GET /productos - listar todos
+# Verificar que la conexión BD funciona
+
+FASE 2: Cliente Hugging Face (20 min)
+2.1 Configuración HF Client
+python# llm/ollama_client.py
+from huggingface_hub import InferenceClient
+
+class OllamaClient:
+    def __init__(self, model_name, api_key):
+        self.client = InferenceClient(model_name, token=api_key)
+    
+    async def generate_response(self, prompt: str) -> str:
+        # Implementar llamada al modelo
+        # Manejo de errores
+        # Retry logic
+2.2 Testing LLM
+python# Endpoint POST /test-llm
+# Probar que el modelo responde correctamente
+
+FASE 3: Sistema NLU Básico (45 min)
+3.1 Clasificador de Intenciones
+python# nlu/intent_classifier.py
+class IntentClassifier:
+    def __init__(self):
+        # Patrones regex/keywords por intención
+        self.patterns = {
+            'buscar_producto': ['buscar', 'encontrar', 'mostrar', 'ver'],
+            'recomendar_categoria': ['recomendar', 'sugerir', 'qué hay'],
+            'comparar_precios': ['comparar', 'precio', 'más barato'],
+            'info_producto': ['información', 'detalles', 'características'],
+            'saludo': ['hola', 'buenos días', 'hey'],
+            'ayuda': ['ayuda', 'help', 'no entiendo']
+        }
+    
+    def classify(self, text: str) -> tuple[str, float]:
+        # Lógica de clasificación simple pero efectiva
+        # Retornar (intención, confidence)
+3.2 Extractor de Entidades
+python# nlu/entity_extractor.py
+class EntityExtractor:
+    def extract(self, text: str) -> dict:
+        # Extraer marca, categoría, rango_precio
+        # Usar regex y listas predefinidas
+        # Retornar dict con entidades encontradas
+3.3 Coordinator NLU
+python# nlu/__init__.py
+class NLUProcessor:
+    def __init__(self):
+        self.intent_classifier = IntentClassifier()
+        self.entity_extractor = EntityExtractor()
+    
+    def process(self, text: str) -> dict:
+        # Procesar intención + entidades
+        # Retornar resultado estructurado
+
+FASE 4: Queries Dinámicas BD (30 min)
+4.1 Query Builder
+python# database/queries.py
+class ProductQueries:
+    def __init__(self, db):
+        self.db = db
+    
+    def search_by_intent(self, intent: str, entities: dict) -> list:
+        # Switch/case por intención
+        # Construir queries dinámicas
+        # Retornar resultados relevantes
+    
+    def get_recommendations(self, categoria: str, limit: int = 5):
+        # Lógica de recomendaciones
+    
+    def compare_prices(self, entities: dict):
+        # Comparar precios por criterios
+4.2 Context Builder
+python# llm/prompt_builder.py
+class PromptBuilder:
+    def build_context(self, intent: str, entities: dict, db_results: list) -> str:
+        # Construir contexto específico por intención
+        # Formatear resultados de BD
+        # Crear prompt optimizado para el LLM
+
+FASE 5: API Endpoints Core (25 min)
+5.1 Endpoint principal de chat
+python# main.py
+@app.post("/chat")
+async def chat_endpoint(message: str, session_id: str = None):
+    # 1. Procesar con NLU
+    # 2. Consultar BD
+    # 3. Construir prompt
+    # 4. Llamar LLM
+    # 5. Guardar en BD
+    # 6. Retornar respuesta
+5.2 Endpoints de utilidad
+python# GET /categorias - listar categorías
+# GET /productos/{categoria} - productos por categoría  
+# GET /stats - estadísticas básicas
+
+FASE 6: Frontend Básico (40 min)
+6.1 HTML Template
+html<!-- templates/index.html -->
+- Chat interface limpia
+- Input para mensajes
+- Área de conversación
+- Indicador de "escribiendo..."
+- Responsive design
+6.2 CSS Styling
+css/* static/css/style.css */
+- Estilo moderno para chat
+- Colores profesionales
+- Animaciones suaves
+- Mobile-first design
+6.3 JavaScript Chat
+javascript// static/js/chat.js
+- Manejo de envío de mensajes
+- Fetch API para llamadas
+- Actualización DOM
+- Manejo de errores
+
+FASE 7: WebSockets (30 min)
+7.1 WebSocket Manager
+python# websocket/manager.py
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections = []
+    
+    async def connect(self, websocket, session_id):
+        # Manejar nuevas conexiones
+    
+    async def send_message(self, message, session_id):
+        # Enviar mensajes a sesión específica
+7.2 WebSocket Endpoint
+python# main.py
+@app.websocket("/ws/{session_id}")
+async def websocket_endpoint(websocket: WebSocket, session_id: str):
+    # Manejar comunicación en tiempo real
+    # Integrar con sistema de chat
+7.3 Frontend WebSocket
+javascript// Actualizar chat.js para usar WebSockets
+// Comunicación bidireccional
+// Reconexión automática
+
+FASE 8: Logging y Métricas (20 min)
+8.1 Sistema de Logging
+python# Logging en cada endpoint
+# Métricas de tiempo de respuesta
+# Guardado en tablas correspondientes
+8.2 Dashboard Básico
+html<!-- templates/dashboard.html -->
+- Estadísticas de uso
+- Intenciones más detectadas
+- Productos más consultados
+
+FASE 9: Testing y Optimización (30 min)
+9.1 Testing Manual
+python# Probar todos los flujos
+# Diferentes tipos de mensajes
+# Casos edge (sin resultados, errores)
+9.2 Optimización
+python# Manejo de errores robusto
+# Timeouts apropiados
+# Validación de datos
+
+FASE 10: Deploy Preparation (15 min)
+10.1 Configuración Producción
+python# requirements.txt completo
+# Variables de entorno
+# Configuración para Render
+10.2 Documentación
+markdown# README.md con:
+- Instrucciones de instalación
+- Endpoints disponibles
+- Ejemplos de uso
+
+⏱️ CRONOGRAMA ESTIMADO
+Total: ~4.5 horas de desarrollo
+
+Fase 1-2: 50 min (Base + LLM)
+Fase 3-4: 75 min (NLU + BD)
+Fase 5-6: 65 min (API + Frontend)
+Fase 7-8: 50 min (WebSockets + Logging)
+Fase 9-10: 45 min (Testing + Deploy)
+
+🎯 PRIORIDADES
+Si tienes poco tiempo, enfócate en:
+
+Fase 1-2 (Base funcional)
+Fase 3-4 (NLU + BD)
+Fase 5 (API core)
+Fase 6 (Frontend básico)
+
+Las fases 7-10 son para impresionar más, pero no críticas para demo funcional.
+¿Por cuál fase empezamos? ¿Tienes alguna preferencia en el orden?

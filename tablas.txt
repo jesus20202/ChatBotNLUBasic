@@ -1,0 +1,58 @@
+-- Tabla: Categorías (estructura jerárquica opcional)
+CREATE TABLE categorias (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    descripcion TEXT,
+    categoria_padre_id INTEGER REFERENCES categorias(id),
+    activo BOOLEAN DEFAULT TRUE
+);
+
+-- Tabla: Productos
+CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    categoria_id INTEGER REFERENCES categorias(id),
+    precio DECIMAL(10,2) NOT NULL,
+    descripcion TEXT,
+    marca VARCHAR(100),
+    stock INTEGER DEFAULT 0,
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla: Seguimiento de sesiones anónimas
+CREATE TABLE usuarios_sesiones (
+    id SERIAL PRIMARY KEY,
+    session_id VARCHAR(255) UNIQUE NOT NULL,
+    ip_address INET,
+    user_agent TEXT,
+    fecha_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_ultimo_acceso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    activo BOOLEAN DEFAULT TRUE
+);
+
+-- Tabla: Conversaciones del chatbot
+CREATE TABLE conversaciones (
+    id SERIAL PRIMARY KEY,
+    session_id VARCHAR(255) REFERENCES usuarios_sesiones(session_id),
+    mensaje_usuario TEXT NOT NULL,
+    respuesta_bot TEXT NOT NULL,
+    intencion_detectada VARCHAR(100),
+    entidades_extraidas JSONB,
+    contexto_bd JSONB,
+    tiempo_respuesta_ms INTEGER,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla: Registro de intenciones detectadas para análisis posterior
+CREATE TABLE intenciones_detectadas (
+    id SERIAL PRIMARY KEY,
+    session_id VARCHAR(255) REFERENCES usuarios_sesiones(session_id),
+    intencion VARCHAR(100) NOT NULL,
+    confianza DECIMAL(3,2), -- por ejemplo: 0.85
+    entidades JSONB,
+    mensaje_original TEXT,
+    productos_consultados JSONB,
+    resultado_exitoso BOOLEAN,
+    fecha_deteccion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

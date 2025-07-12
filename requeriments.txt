@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+pydantic
+jinja2
+aiofiles
+httpx
+python-multipart
+websockets
+python-dotenv
+huggingface_hub

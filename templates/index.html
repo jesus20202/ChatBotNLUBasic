@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat IA DataBot</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="chat-container">
+        <h2>DataBot Chat IA</h2>
+        <div id="chat-window" class="chat-window">
+            <!-- Mensajes se agregan aquí -->
+        </div>
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." autocomplete="off" required>
+            <button type="submit">Enviar</button>
+        </form>
+        <div id="typing-indicator" style="display:none;">Escribiendo...</div>
+    </div>
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: databot-chat
+    env: python
+    buildCommand: pip install -r requeriments
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: DATABASE_URL
+        value: ${DATABASE_URL}
+      - key: HF_TOKEN
+        value: ${HF_TOKEN}
+    autoDeploy: true
+    plan: free
