@@ -9,7 +9,9 @@ class IntentClassifier:
             'comparar_precios': ['comparar', 'precio', 'más barato', 'diferencia de precio'],
             'info_producto': ['información', 'detalles', 'características', 'cuéntame de'],
             'saludo': ['hola', 'buenos días', 'hey', 'buenas'],
-            'ayuda': ['ayuda', 'help', 'no entiendo', 'cómo funciona']
+            'ayuda': ['ayuda', 'help', 'no entiendo', 'cómo funciona'],
+            'comparar_precios_web': [
+            'online', 'mercadolibre', 'falabella', 'web', 'internet', 'tiendas online', 'precio en línea', 'precio externo', 'oferta en web']
         }
 
     def normalize(self, text: str) -> str:
