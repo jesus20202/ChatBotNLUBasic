@@ -1,0 +1,12 @@
+{
+  "labels":[
+    "recomendar_categoria",
+    "comparar_precios",
+    "saludo",
+    "ayuda",
+    "info_producto",
+    "buscar_producto",
+    "comparar_precios_web"
+  ],
+  "threshold":0.5
+}

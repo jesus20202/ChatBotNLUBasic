@@ -19,6 +19,8 @@ class FuncionesCRUD:
     def search_by_intent(self, intent: str, entities: dict) -> list:
         query = self.db.query(Producto)
 
+        working_entities = entities.copy()
+
         if "categoria" in entities and isinstance(entities["categoria"], str):
             categoria_id = self.get_categoria_id(entities["categoria"])
             entities["categoria"] = categoria_id

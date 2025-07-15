@@ -1,0 +1,13 @@
+{
+  "labels":[
+    "buscar_producto",
+    "comparar_precios_web",
+    "saludo",
+    "comparar_precios",
+    "ayuda",
+    "info_producto",
+    "recomendar_categoria"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}

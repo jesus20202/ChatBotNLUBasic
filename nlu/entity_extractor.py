@@ -10,9 +10,9 @@ class EntityExtractor:
             "gourmetlibros", "lectora", "eleganceco", "beautyplus", "makeart", "visiontech",
             "keymaster", "ergomouse", "curveview", "summerstyle", "runfast", "leatherline",
             "sleepwell", "homevoice", "thermomax", "prospin", "yogaflex", "smartfit", "futurbooks",
-            "greenguide", "fotolibro", "skinpure", "beautymask", "nailart", "turbodry", "camvision"
+            "greenguide", "fotolibro", "skinpure", "beautymask", "nailart", "turbodry", "camvision","lenovo", "samsung"
         ]
-        self.categorias = ["electronica", "ropa", "deporte", "libros", "belleza"]
+        self.categorias = ["electronica", "ropa", "deporte", "libros", "belleza" ]
 
     def normalize(self, text: str) -> str:
         text = text.lower()
