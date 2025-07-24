@@ -53,6 +53,13 @@ class FuncionesCRUD:
             if "categoria" in entities and entities["categoria"]:
                 query = query.filter(Producto.categoria_id == entities["categoria"])
             return query.order_by(Producto.precio.asc()).limit(5).all()
+        
+        elif intent == "comparar_precios_web":
+            if "marca" in entities:
+                query = query.filter(Producto.marca.ilike(f"%{entities['marca']}%"))
+            if "categoria" in entities and entities["categoria"]:
+                query = query.filter(Producto.categoria_id == entities["categoria"])
+            return query.order_by(Producto.precio.asc()).limit(5).all()
 
         elif intent == "info_producto":
             if "marca" in entities:

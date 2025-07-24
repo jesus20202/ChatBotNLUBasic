@@ -30,28 +30,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function connectWebSocket() {
-        ws = new WebSocket(`ws://${window.location.host}/ws/${sessionId}`);
+    // Detectar protocolo automáticamente
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${protocol}//${window.location.host}/ws/${sessionId}`;
+    
+    console.log('🔌 Conectando WebSocket a:', wsUrl); // Debug
+    ws = new WebSocket(wsUrl);
 
-        ws.onopen = () => {
-            addMessage("Conexión establecida con el chat IA.", "bot");
-        };
+    ws.onopen = () => {
+        console.log('✅ WebSocket conectado');
+        addMessage("Conexión establecida con el chat IA.", "bot");
+    };
 
-        ws.onmessage = (event) => {
-            typingIndicator.style.display = "none";
-            document.querySelectorAll(".message.bot-thinking").forEach(e => e.remove());
-            addMessage(event.data, "bot");
-        };
+    ws.onmessage = (event) => {
+        typingIndicator.style.display = "none";
+        document.querySelectorAll(".message.bot-thinking").forEach(e => e.remove());
+        addMessage(event.data, "bot");
+    };
 
-        ws.onclose = () => {
-            addMessage("Conexión perdida. Reintentando...", "bot");
-            setTimeout(connectWebSocket, 2000); // Reconexión automática
-        };
+    ws.onclose = (event) => {
+        console.log('❌ WebSocket cerrado:', event.code, event.reason);
+        addMessage("Conexión perdida. Reintentando...", "bot");
+        setTimeout(connectWebSocket, 3000); // Aumenta el tiempo de reconexión
+    };
 
-        ws.onerror = () => {
-            addMessage("Error de WebSocket.", "bot");
-            ws.close();
-        };
-    }
+    ws.onerror = (error) => {
+        console.error('🚨 Error WebSocket:', error);
+        addMessage("Error de WebSocket. Verificando conexión...", "bot");
+        setTimeout(connectWebSocket, 5000);
+    };
+}
 
     connectWebSocket();
 

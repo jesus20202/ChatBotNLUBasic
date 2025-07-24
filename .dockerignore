@@ -1,0 +1,38 @@
+# Ignorar archivos y carpetas innecesarias
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.sqlite3
+*.db
+*.coverage
+*.pytest_cache/
+*.DS_Store
+
+# Ignorar configuraciones locales y archivos sensibles
+
+.vscode/
+.idea/
+*.swp
+
+# Ignorar carpetas de control de versiones
+.git/
+.gitignore
+
+# Ignorar archivos de pruebas
+tests/
+coverage/
+*.xml
+
+# Ignorar archivos estáticos generados
+staticfiles/
+node_modules/
+
+# Ignorar archivos de documentación y planes
+*.md
+*.yaml
+*.yml
+
+# Ignorar archivos de herramientas y datos temporales
+tools/
+intent_examples.json

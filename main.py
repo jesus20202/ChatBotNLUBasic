@@ -100,10 +100,14 @@ async def chat_endpoint(
 
         # Si es comparar precios web, activa scraping y contexto enriquecido
         if intent == "comparar_precios_web":
+            print(f"🐛 DEBUG - Entities antes de extract_product_name: {entities}")
             product_name = extract_product_name(message, entities)  # Usar entities original
+            print(f"🐛 DEBUG - Product name extraído: '{product_name}' (tipo: {type(product_name)})")
+            
             crud = FuncionesCRUD(db)
             productos = crud.search_by_intent(intent, entities)
             db_price = float(productos[0].precio) if productos else None
+            print(f"🐛 DEBUG - Enviando a compare_prices: product_name='{product_name}', db_price={db_price}")
             comparison = await price_comparator.compare_prices(product_name, db_price)
             prompt = prompt_builder.build_context(intent, entities, productos, comparison)
         else:

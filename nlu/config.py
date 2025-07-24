@@ -13,7 +13,7 @@ ENTITY_LABELS = {
 MODEL_PATH = "nlu/spacy_model/modelo_intenciones"
 
 # Nombre del modelo base de spaCy para español
-BASE_SPACY_MODEL = "es_dep_news_trf"
+#BASE_SPACY_MODEL = "es_dep_news_trf"
 
 # Lista de intenciones soportadas 
 SUPPORTED_INTENTS = [
